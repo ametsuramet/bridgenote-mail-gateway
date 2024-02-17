@@ -1,0 +1,3 @@
+# bridgenote-mail-gateway
+
+INI MAIL GATEWAY BRIDGENOTE ONEDENTAL
