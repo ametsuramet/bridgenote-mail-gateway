@@ -1,0 +1,33 @@
+### TEST
+POST http://103.150.190.170:2340/send-mail
+Content-Type: application/json
+
+{
+    "process_type": "Email",
+    "message_type": "Verification",
+    "mail": {
+        "to": "rahmat.supriatna@ametory.id",
+        "cc": "",
+        "bcc": "",
+        "reply-to": "",
+        "title": "HALLO",
+        "body": "DUNYA"
+    }
+}
+
+### TEST
+POST http://localhost:2340/send-mail
+Content-Type: application/json
+
+{
+    "process_type": "Email",
+    "message_type": "Verification",
+    "mail": {
+        "to": "rahmat.supriatna@ametory.id",
+        "cc": "",
+        "bcc": "",
+        "reply-to": "",
+        "title": "HALLO",
+        "body": "DUNYA"
+    }
+}
