@@ -23,9 +23,9 @@ Content-Type: application/json
     "process_type": "Email",
     "message_type": "Verification",
     "mail": {
-        "to": "rahmat.supriatna@ametory.id",
-        "cc": "",
-        "bcc": "",
+        "to": "bridgenote.23@gmail.com",
+        "cc": [],
+        "bcc": [],
         "reply-to": "",
         "title": "HALLO",
         "body": "DUNYA"

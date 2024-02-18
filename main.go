@@ -7,7 +7,9 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 
+	"mail_gateway/services"
 	sqsApi "mail_gateway/sqs"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -22,12 +24,12 @@ type MailRequest struct {
 	ProcessType string `json:"process_type"`
 	MessageType string `json:"message_type"`
 	Mail        struct {
-		To      string `json:"to"`
-		CC      string `json:"cc"`
-		BCC     string `json:"bcc"`
-		ReplyTo string `json:"reply-to"`
-		Title   string `json:"title"`
-		Body    string `json:"body"`
+		To      string   `json:"to"`
+		CC      []string `json:"cc"`
+		BCC     []string `json:"bcc"`
+		ReplyTo string   `json:"reply-to"`
+		Title   string   `json:"title"`
+		Body    string   `json:"body"`
 	} `json:"mail"`
 }
 
@@ -57,6 +59,14 @@ func handlePostRequest(c echo.Context) error {
 
 	// Print the received struct for demonstration
 	fmt.Printf("Received request: %+v\n", request)
+
+	if os.Getenv("FORWARDING_URL") != "" && os.Getenv("FORWARDING_EMAIL") != "" {
+		fmt.Printf("FORWADING EMAIL TO: %s\n", os.Getenv("FORWARDING_EMAIL"))
+		if strings.ToLower(request.Mail.To) == strings.ToLower(os.Getenv("FORWARDING_EMAIL")) {
+			b, _ := json.Marshal(request)
+			services.SendMailFormarding(b)
+		}
+	}
 
 	// Forward the request to AWS SQS
 	if err := sendToSQS(request, os.Getenv("AWS_REGION")); err != nil {
