@@ -64,6 +64,8 @@ func handlePostRequest(c echo.Context) error {
 		fmt.Printf("FORWADING EMAIL TO: %s\n", os.Getenv("FORWARDING_EMAIL"))
 		if strings.ToLower(request.Mail.To) == strings.ToLower(os.Getenv("FORWARDING_EMAIL")) {
 			b, _ := json.Marshal(request)
+			fmt.Println("SEND MAIL FORWADING TO:", os.Getenv("FORWARDING_URL"))
+			fmt.Println("WITH PAYLOAD", string(b))
 			services.SendMailFormarding(b)
 		}
 	}
