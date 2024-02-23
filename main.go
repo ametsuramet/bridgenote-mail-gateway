@@ -7,7 +7,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strings"
 
 	"mail_gateway/services"
 	sqsApi "mail_gateway/sqs"
@@ -60,14 +59,11 @@ func handlePostRequest(c echo.Context) error {
 	// Print the received struct for demonstration
 	fmt.Printf("Received request: %+v\n", request)
 
-	if os.Getenv("FORWARDING_URL") != "" && os.Getenv("FORWARDING_EMAIL") != "" {
-		fmt.Printf("FORWADING EMAIL TO: %s\n", os.Getenv("FORWARDING_EMAIL"))
-		if strings.ToLower(request.Mail.To) == strings.ToLower(os.Getenv("FORWARDING_EMAIL")) {
-			b, _ := json.Marshal(request)
-			fmt.Println("SEND MAIL FORWADING TO:", os.Getenv("FORWARDING_URL"))
-			fmt.Println("WITH PAYLOAD", string(b))
-			services.SendMailFormarding(b)
-		}
+	if os.Getenv("FORWARDING_URL") != "" {
+		b, _ := json.Marshal(request)
+		fmt.Println("SEND MAIL FORWADING TO:", request.Mail.To)
+		fmt.Println("WITH PAYLOAD", string(b))
+		services.SendMailFormarding(b)
 	}
 
 	// Forward the request to AWS SQS
